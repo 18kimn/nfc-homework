@@ -1,15 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./app.jsx";
-
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App.jsx'
 
 ReactDOM.render(
   <React.StrictMode>
-      <App />
+    <App />
   </React.StrictMode>,
-  document.getElementById("root")
-);
+  document.getElementById('root'),
+)
 
 if (import.meta.hot) {
-  import.meta.hot.accept();
+  import.meta.hot.accept()
 }

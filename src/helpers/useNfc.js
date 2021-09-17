@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react'
 
 // three possible return values
 // if device incompatible, string message to display
@@ -7,29 +7,34 @@ import React, { useState, useEffect } from "react";
 
 const useNfc = () => {
   const [allowed, setAllowed] = useState(false)
-  const [signal, setSignal] = useState();
-  const available = "NDEFReader" in window;
-  const ndef = available && allowed && new window.NDEFReader();
+  const [signal, setSignal] = useState()
+  const available = 'NDEFReader' in window
+  const ndef = available && allowed && new window.NDEFReader()
 
-  if (!available) return ['NFC reader not available on this device', setAllowed]
-  
+  if (!available)
+    return [
+      "There isn't an NFC reader available on this device. Sorry!!",
+      setAllowed,
+      setSignal,
+    ]
+
   useEffect(async () => {
-    if(!allowed){
+    if (!allowed) {
       setSignal(false)
       return // exit the useEffect, e.g. don't try to detect a scan
-    } 
+    }
     // remove the button UI
     setSignal('everything looks good, now awaiting read!')
-    await ndef.scan();
-    const onRead = ({ message} ) => {
-      const decoder = new TextDecoder();
-      setSignal(decoder.decode(message.records[0].data.buffer));
-    };
+    await ndef.scan()
+    const onRead = ({message}) => {
+      const decoder = new TextDecoder()
+      setSignal(decoder.decode(message.records[0].data.buffer))
+    }
 
-    ndef.onreading = onRead;
-  }, [allowed]);
+    ndef.onreading = onRead
+  }, [allowed])
 
-  return [signal, setAllowed]
-};
+  return [signal, setAllowed, setSignal]
+}
 
 export default useNfc
